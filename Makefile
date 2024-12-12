@@ -1,15 +1,18 @@
 #nom de l'executable
-NAME =  minishell
+NAME =  cub3D
 
 #compiler ; compilateur, flag de debogue, flag d'exigence
 CC = cc
 CFLAGS = -Wall -Werror -Wextra -g3
 
 #include
-INCL = -Linc/libft/ -Linc/minilibx-linux -Llib -lmlx_Linux -lXext -lX11 -lm
+INCL = -Linc/libft -Linc/minilibx-linux -Llibft -lmlx_Linux -lXext -lX11 -lm
 
 #fichiers sources
-SRCS = src/main.c
+SRCS = 	src/main.c \
+		src/init.c \
+		src/key_hooks.c \
+		src/parsing.c \
 
 
 #objets
@@ -19,8 +22,8 @@ OBJS = $(SRCS:.c=.o)
 	$(CC) $(CFLAGS) -c $< -o $ $(<:.c=.o)
 
 ${NAME}: ${OBJS}
-	make -sC inc/libft/
-	make -sC inc/minilibx-linux/
+	make -C inc/libft/
+	make -C inc/minilibx-linux/
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(INCL)
 
 all : $(NAME)
