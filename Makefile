@@ -1,41 +1,77 @@
-#nom de l'executable
-NAME =  cub3D
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: armeyer <armeyer@student.42.fr>            +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2024/11/21 12:33:03 by armeyer           #+#    #+#              #
+#    Updated: 2025/01/15 12:07:42 by armeyer          ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
-#compiler ; compilateur, flag de debogue, flag d'exigence
-CC = cc
-CFLAGS = -Wall -Werror -Wextra -g3
+SRC =	main.c \
+		parsing.c \
+		parsing_routines.c \
+		parsing_texture_color_res.c \
+		map.c \
+		map_closure_check.c \
+		parsing_utils.c \
+		keys_manager.c \
+		raycasting_init.c \
+		raycasting_utils.c \
+		raycasting_movement.c \
+		raycasting.c \
+		error_manager.c \
+		get_next_line.c \
+		get_next_line_2.c \
+		get_next_line_utils.c \
+		get_next_line_utils_2.c \
+		init.c		\
+		init_utils.c
 
-#include
-INCL = -Linc/libft -Linc/minilibx-linux -Llibft -lmlx_Linux -lXext -lX11 -lm
+NAME = Cub3D
 
-#fichiers sources
-SRCS = 	src/main.c \
-		src/init.c \
-		src/key_hooks.c \
-		src/parsing.c \
+MLX_DIR = minilibx-linux
+MLX = libmlx.a 
+CC = clang
 
+CFLAGS = -Wall -Wextra -Werror -g
 
-#objets
-OBJS = $(SRCS:.c=.o)
-#les fichiers obj prennent le nom des fichiers sources "*.c"
-%.o : %.c
-	$(CC) $(CFLAGS) -c $< -o $ $(<:.c=.o)
+OBJ_DIR = obj
+SRC_DIR = src
+INC_DIR = inc
 
-${NAME}: ${OBJS}
-	make -C inc/libft/
-	make -C inc/minilibx-linux/
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(INCL)
+OBJ = $(addprefix $(OBJ_DIR)/,$(SRC:.c=.o))
+DPD = $(addprefix $(OBJ_DIR)/,$(SRC:.c=.d))
 
-all : $(NAME)
+.c.o:
+	${CC} ${CFLAGS} -c$< -o ${<:.c=.o}
+all:
+	make -C minilibx-linux
+	$(MAKE) $(NAME)
+	
+$(NAME): $(OBJ)
+	${CC} $(CFLAGS) -o $(NAME) $(OBJ) -L$(MLX_DIR) -lmlx -lm -lbsd -lX11 -lXext
+		@echo $(NAME) : Created !
 
-clean :
-	rm -rf $(OBJS)
-	make -C inc/libft/ clean
-	# make -C inc/minilibx-linux/ clean
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | .gitignore
+		@mkdir -p $(OBJ_DIR)
+		${CC} $(CFLAGS) -I $(INC_DIR) -I $(MLX_DIR) -c $< -o $@
 
-fclean : clean
-	rm -rf $(NAME)
-	make -C inc/libft/ fclean
-	# make -C inc/minilibx-linux/ fclean
+.gitignore:
+		@echo $(NAME) > .gitignore
 
-re : fclean all
+clean:
+	@rm -rf $(OBJ_DIR)
+	@echo "obj deleted"
+
+fclean:	clean
+	@rm -rf $(NAME)
+	@echo "[$(NAME)]: deleted"
+
+re: fclean all
+
+.PHONY: all, clean, fclean, re, mlx
+
+-include $(DPD)

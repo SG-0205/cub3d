@@ -5,94 +5,121 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: sgoldenb <sgoldenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/05 21:17:19 by sgoldenb          #+#    #+#             */
-/*   Updated: 2024/11/05 22:26:27 by sgoldenb         ###   ########.fr       */
+/*   Created: 2024/11/21 12:24:36 by armeyer           #+#    #+#             */
+/*   Updated: 2025/01/24 14:32:36 by sgoldenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/cub3d.h"
+#include "../include/cub3d.h"
 
-int	clean_exit_w(void *data)
+void	ft_init_game(t_gm *gm)
 {
-	t_cub3D	*cast;
-
-	cast = (t_cub3D *)data;
-	return (clean_exit(cast));
+	gm->north = NULL;
+	gm->south = NULL;
+	gm->west = NULL;
+	gm->east = NULL;
+	gm->f = -1;
+	gm->c = -1;
+	gm->rx = 0;
+	gm->ry = 0;
+	gm->nblines = 0;
+	gm->sizeline = 0;
+	gm->map = NULL;
+	gm->dx = 0;
+	gm->dy = 0;
+	gm->multiple_player = 0;
+	gm->empty_line = 0;
+	gm->insidemap = 0;
+	gm->count = 0;
+	gm->sum = 0;
+	gm->wrongcharmap = 0;
+	ft_init_game_2(gm);
 }
 
-int	clean_exit(t_cub3D *data)
+static void	init_t(t_gm *gm)
 {
-	if (!data)
-		exit(1);
-	if (data->mlx && data->mlx->img)
-		mlx_destroy_image(data->mlx->mlx, data->mlx->img);
-	if (data->mlx && data->mlx->win)
-		mlx_destroy_window(data->mlx->mlx, data->mlx->win);
-	if (data->mlx)
-		mlx_destroy_display(data->mlx);
-	gc_flush(data->gc);
-	exit(0);
+	gm->t.step = 0;
+	gm->t.texdir = 0;
+	gm->t.texpos = 0;
+	gm->t.texx = 0;
+	gm->t.texy = 0;
+	gm->t.wallx = 0;
 }
 
-static t_map	*init_map(t_cub3D *data)
+void	ft_init_game_2(t_gm *gm)
 {
-	t_map	*new;
-	int		i;
+	gm->starting_pos = 'x';
+	gm->nb_v_lines = 0;
+	gm->ierror2 = 0;
+	gm->ierror3 = 0;
+	gm->data.img = NULL;
+	gm->data.img2 = NULL;
+	gm->texture[0].img = NULL;
+	gm->texture[1].img = NULL;
+	gm->texture[2].img = NULL;
+	gm->texture[3].img = NULL;
+	gm->texture[4].img = NULL;
+	gm->data.mlx_win = NULL;
+	gm->data.mlx_ptr = NULL;
+	gm->map = NULL;
+	gm->gnl_buff_link = NULL;
+	gm->gnl_internal_link = NULL;
+	gm->strjoin_link = NULL;
+	init_t(gm);
+}
 
-	if (!data)
-		return (NULL);
-	new = (t_map *)gc_malloc(data->gc, sizeof(t_map), 0);
-	if (!new)
-		error(NULL, E_INITD, errno, data->mlx);
-	new->fd = FD_INIT;
-	new->textures_paths = NULL;
-	new->path = NULL;
-	new->translated = NULL;
-	i = -1;
-	while (++i < 3)
+void	ft_init_game_3(t_gm *gm)
+{
+	double	a;
+	double	b;
+
+	a = 0;
+	b = 0;
+	if (gm->ray.raydiry == 0)
+		gm->ray.deltadistx = 0;
+	else if (gm->ray.raydirx == 0)
+		gm->ray.deltadistx = 1;
+	else
 	{
-		new->rgb_c[i] = CO_INIT;
-		new->rgb_f[i] = CO_INIT;
+		a = gm->ray.raydiry * gm->ray.raydiry;
+		b = gm->ray.raydirx * gm->ray.raydirx;
+		gm->ray.deltadistx = sqrt(1 + a / b);
 	}
-	return (new);
+	if (gm->ray.raydirx == 0)
+		gm->ray.deltadisty = 0;
+	else if (gm->ray.raydiry == 0)
+		gm->ray.deltadisty = 1;
+	else
+	{
+		a = gm->ray.raydirx * gm->ray.raydirx;
+		b = gm->ray.raydiry * gm->ray.raydiry;
+		gm->ray.deltadisty = sqrt(1 + a / b);
+	}
 }
 
-static t_mlx	*init_mlx(t_cub3D *data)
+void	ft_init_direction(t_gm *gm)
 {
-	t_mlx	*new;
-
-	if (!data)
-		return (NULL);
-	new = (t_mlx *)gc_malloc(data->gc, (sizeof(t_mlx)), 0);
-	if (!new)
-		error(NULL, E_INIT, errno, NULL);
-	new->gc = data->gc;
-	new->mlx = mlx_init();
-	if (!new->mlx)
-		error(NULL, E_INITM, errno, new);
-	new->img = NULL;
-	new->img_data = NULL;
-	new->win = mlx_new_window(new->mlx, WIN_W, WIN_H, WIN_T);
-	mlx_hook(new->win, EVENT_CLOSE_BTN, 0, clean_exit_w, data);
-	mlx_key_hook(new->win, key_hooks, data);
-	return (new);
-}
-
-t_cub3D	*init_data(void)
-{
-	t_cub3D		*new;
-	t_collector	*gc;
-
-	gc = gc_init(2);
-	if (!gc)
-		error(NULL, E_INIT, errno, NULL);
-	new = (t_cub3D *)gc_malloc(gc, (sizeof(t_cub3D)), 0);
-	if (!new)
-		error(NULL, E_INIT, errno, NULL);
-	new->gc = gc;
-	new->mlx = init_mlx(new);
-	new->map = init_map(new);
-	if (!new->mlx || !new->map)
-		error(NULL, E_INIT, ENOMEM, new->mlx);
-	return (new);
+	if (gm->starting_pos == 'x')
+	{
+		if (!gm->map)
+			ft_error(gm, "No starting position in map.");
+		else
+			ft_error(gm, "Invalid data order");
+	}
+	if (gm->starting_pos == 'N')
+		gm->ray.dirx = -1;
+	if (gm->starting_pos == 'S')
+		gm->ray.dirx = 1;
+	if (gm->starting_pos == 'E')
+		gm->ray.diry = 1;
+	if (gm->starting_pos == 'W')
+		gm->ray.diry = -1;
+	if (gm->starting_pos == 'N')
+		gm->ray.plany = 0.66;
+	if (gm->starting_pos == 'S')
+		gm->ray.plany = -0.66;
+	if (gm->starting_pos == 'E')
+		gm->ray.planx = 0.66;
+	if (gm->starting_pos == 'W')
+		gm->ray.planx = -0.66;
 }

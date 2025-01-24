@@ -1,0 +1,14 @@
+C 255,20 ,30
+NO      ./textures/mossy.xpm
+SO ./textures/greystone.xpm
+EA ./textures/cobblestone.xpm
+WE ./textures/bluestone.xpm
+
+F  000, 000, 00
+
+
+11111
+10001
+10101
+10S01
+11111
