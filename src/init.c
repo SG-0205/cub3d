@@ -100,12 +100,7 @@ void	ft_init_game_3(t_gm *gm)
 void	ft_init_direction(t_gm *gm)
 {
 	if (gm->starting_pos == 'x')
-	{
-		if (!gm->map)
-			ft_error(gm, "No starting position in map.");
-		else
-			ft_error(gm, "Invalid data order");
-	}
+		ft_error(gm, "No starting position in map.");
 	if (gm->starting_pos == 'N')
 		gm->ray.dirx = -1;
 	if (gm->starting_pos == 'S')

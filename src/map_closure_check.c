@@ -70,9 +70,7 @@ int	floodfill(t_gm *gm, int x, int y, int *max)
 
 	if (!gm)
 		return (-1);
-	if ((x < 0 || y < 0) ||
-		(((x > max[0] || !gm->map[x][y]) && gm->map[x - 1][y] != '1') ||
-			((y > max[1] || !gm->map[x][y]) && gm->map[x][y - 1] != '1')))
+	if ((x < 0 || y < 0) || (x > max[0] || y > max[1]))
 		ft_error(gm, "Map isn't fully bordered by walls.\n");
 	if (is_supported_char(&gm->map[x][y]))
 		return (1);

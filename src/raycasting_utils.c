@@ -64,13 +64,15 @@ void	ft_incrementray(t_gm *gm)
 void	ft_drawstartend(t_gm *gm)
 {
 	if (gm->ray.side == 0)
-		gm->ray.perpwalldist = ((double)gm->ray.mapx - \
-			gm->ray.posx + (1 - (double)gm->ray.stepx) / 2) \
-			/ gm->ray.raydirx;
+		gm->ray.perpwalldist = ((double)gm->ray.mapx -
+								gm->ray.posx + (1 - (double)gm->ray.stepx) / 2)
+								/
+			gm->ray.raydirx;
 	else
-		gm->ray.perpwalldist = ((double)gm->ray.mapy - \
-			gm->ray.posy + (1 - (double)gm->ray.stepy) / 2) \
-			/ gm->ray.raydiry;
+		gm->ray.perpwalldist = ((double)gm->ray.mapy -
+								gm->ray.posy + (1 - (double)gm->ray.stepy) / 2)
+								/
+			gm->ray.raydiry;
 	gm->ray.lineheight = (int)(gm->ry / gm->ray.perpwalldist);
 	gm->ray.drawstart = -gm->ray.lineheight / 2 + gm->ry / 2;
 	if (gm->ray.drawstart < 0)

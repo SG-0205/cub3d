@@ -19,7 +19,7 @@ int	ft_empty_line(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] != '\t' && str[i] != ' ' && str[i] != '\0' && str[i] != '\n' \
+		if (str[i] != '\t' && str[i] != ' ' && str[i] != '\0' && str[i] != '\n'
 			&& str[i] != '\r' && str[i] != '\v' && str[i] != '\f')
 			return (1);
 		i++;

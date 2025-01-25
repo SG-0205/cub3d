@@ -57,13 +57,13 @@ int	ft_color_column(t_gm *gm)
 	gm->ray.drawend = gm->ry - gm->ray.drawstart;
 	i = gm->ray.drawend;
 	while (++j < gm->ray.drawstart)
-		gm->data.addr[j * gm->data.line_length / 4 + \
+		gm->data.addr[j * gm->data.line_length / 4 +
 						gm->ray.x] = gm->c;
 	if (j <= gm->ray.drawend)
 		ft_draw_texture(gm, gm->ray.x, j);
 	j = i;
 	while (++j < gm->ry)
-		gm->data.addr[j * gm->data.line_length / 4 + \
+		gm->data.addr[j * gm->data.line_length / 4 +
 						gm->ray.x] = gm->f;
 	return (0);
 }
@@ -80,16 +80,17 @@ void	ft_draw_texture(t_gm *gm, int x, int y)
 	{
 		gm->t.texx = gm->texture[gm->t.texdir].width - gm->t.texx - 1;
 	}
-	gm->t.texpos = (gm->ray.drawstart - gm->ry / 2 + gm->ray.lineheight / 2) \
-	* gm->t.step;
+	gm->t.texpos = (gm->ray.drawstart - gm->ry / 2 + gm->ray.lineheight / 2)
+		* gm->t.step;
 	while (++y <= gm->ray.drawend)
 	{
 		gm->t.texy = (int)gm->t.texpos & (gm->texture[gm->t.texdir].height - 1);
 		gm->t.texpos += gm->t.step;
 		if ((x >= 0 && y >= 0) && y < gm->ry && x < gm->rx)
-			gm->data.addr[y * gm->data.line_length / 4 + x] = \
-				gm->texture[gm->t.texdir].addr[gm->t.texy * \
-					gm->texture[gm->t.texdir].line_length \
-					/ 4 + gm->t.texx];
+			gm->data.addr[y * gm->data.line_length / 4 + x] =
+				gm->texture[gm->t.texdir].addr[gm->t.texy *
+													gm->texture[gm->t.texdir].line_length
+														/ 4 +
+												gm->t.texx];
 	}
 }

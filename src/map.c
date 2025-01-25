@@ -21,7 +21,7 @@ int	ft_wall(t_gm *gm)
 	{
 		if (gm->map[i][0] != '1')
 			return (1);
-	i++;
+		i++;
 	}
 	i = 0;
 	while (i < gm->nblines)
@@ -35,6 +35,20 @@ int	ft_wall(t_gm *gm)
 	if (ft_wall_util(gm->map[gm->nblines - 1]) == 1)
 		return (1);
 	return (0);
+}
+
+static void	fill_blank_line(t_gm *gm, int *i, int *j)
+{
+	int	j_2;
+
+	if (*j == gm->sizeline)
+		return ;
+	else if (*j < gm->sizeline)
+	{
+		j_2 = *j - 1;
+		while (++j_2 < gm->sizeline)
+			gm->map[*i][j_2] = '1';
+	}
 }
 
 int	ft_copy_map(char *str, t_gm *gm)
@@ -55,12 +69,16 @@ int	ft_copy_map(char *str, t_gm *gm)
 		{
 			gm->map[i][j] = '1';
 			if (str[j] == ' ')
-				printf("Warning: spaces inside of map @[%d][%d]" \
-						"replacing with 1...\n", i, j);
+				printf(
+					"Warning: spaces inside of map @[%d][%d]"
+					"replacing with 1...\n",
+					i,
+					j);
 		}
 		else
-		gm->map[i][j] = str[j];
+			gm->map[i][j] = str[j];
 	}
+	fill_blank_line(gm, &i, &j);
 	gm->map[i][j] = '\0';
 	i++;
 	return (0);
@@ -77,9 +95,11 @@ int	ft_is_map(char *str, t_gm *gm)
 	{
 		while (str[i] != '\0')
 		{
-			if (str[i] != ' ' && str[i] != '0' && str[i] != '1' && \
-				str[i] != 'N' && str[i] != 'S' && str[i] != 'E' && \
-				str[i] != 'W' && str[i] != '\n' && str[i] != '\t')
+			if (str[i] != ' ' && str[i] != '0' && str[i] != '1' && str[i] != 'N'
+				&&
+				str[i] != 'S' && str[i] != 'E' && str[i] != 'W'
+					&& str[i] != '\n' &&
+				str[i] != '\t')
 			{
 				if (gm->insidemap == 1)
 				{
@@ -104,9 +124,10 @@ void	ft_map(char *str, t_gm *gm)
 	i = 0;
 	if (ft_is_map(str, gm) == 1)
 	{
-		if (gm->f == -1 || gm->c == -1 || gm->north == NULL || \
-		gm->south == NULL || gm->west == NULL || gm->east == NULL)
-		gm->erreur = 2;
+		if (gm->f == -1 || gm->c == -1 || gm->north == NULL || gm->south == NULL
+			||
+			gm->west == NULL || gm->east == NULL)
+			gm->erreur = 2;
 		i = ft_strlen(str);
 		if (i > ssizeline)
 			ssizeline = i;

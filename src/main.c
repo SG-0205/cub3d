@@ -12,10 +12,15 @@
 
 #include "../include/cub3d.h"
 
-int	main(int argc, char **argv)
+int	main(int argc, char **argv, char **envp)
 {
 	t_gm	gm;
 
+	if (!*envp)
+	{
+		printf("Error\nPas d'environnement (mlx KO).\n");
+		exit(1);
+	}
 	ft_init_game(&gm);
 	if (argc == 2)
 		ft_cub(argv[1], &gm);

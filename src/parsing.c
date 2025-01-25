@@ -10,10 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../include/cub3d.h"
 #include <stdio.h>
 #include <string.h>
-
-#include "../include/cub3d.h"
 
 static void	ft_bzero_array(void **ptr, size_t n)
 {

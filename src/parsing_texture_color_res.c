@@ -20,8 +20,8 @@ int	ft_atoi2(const char *str, t_gm *gm)
 	if (str[1] != ' ')
 		gm->erreur = 2;
 	ft_atoi2_check(str, gm);
-	while (str[gm->i] == ' ' || str[gm->i] == '\t' || str[gm->i] == ',' || \
-			str[gm->i] == '\n' || str[gm->i] == '\r' || str[gm->i] == '\v' || \
+	while (str[gm->i] == ' ' || str[gm->i] == '\t' || str[gm->i] == ',' ||
+			str[gm->i] == '\n' || str[gm->i] == '\r' || str[gm->i] == '\v' ||
 			str[gm->i] == '\f')
 	{
 		gm->i++;
@@ -47,9 +47,9 @@ int	ft_path_texture(char *str, char **texture, t_gm *gm, int j)
 	{
 		ft_error(gm, "More than one texture provided for one side.");
 	}
-	if (ft_charinstr(str, '.') == 0 || ft_charinstr(str, '/') == 0 || \
+	if (ft_charinstr(str, '.') == 0 || ft_charinstr(str, '/') == 0 ||
 		ft_strlen2(str) <= 2)
-	gm->erreur = 2;
+		gm->erreur = 2;
 	while (str[j] != '.')
 	{
 		if (str[j] != ' ' && str[j] != '.')
@@ -82,10 +82,10 @@ void	ft_texture(char *str, t_gm *gm)
 		ft_path_texture(str, &gm->west, gm, 2);
 	else if (str[i] == 'W' && str[i + 1] == 'E')
 		ft_path_texture(str, &gm->east, gm, 2);
-	else if (str[0] != 'N' && str[0] != 'S' && \
-			str[0] != 'W' && str[0] != 'E' && \
-			str[0] != 'F' && str[0] != 'C' && str[0] > 65 && str[0] < 122)
-	gm->erreur = 2;
+	else if (str[0] != 'N' && str[0] != 'S' &&
+				str[0] != 'W' && str[0] != 'E' &&
+				str[0] != 'F' && str[0] != 'C' && str[0] > 65 && str[0] < 122)
+		gm->erreur = 2;
 }
 
 static void	check_rgb_format(char *str, t_gm *gm)
@@ -110,11 +110,11 @@ void	ft_color_res(char **str, t_gm *gm)
 
 	i = 0;
 	gm->i = 1;
-	if (gm->sizeline > 0 && (gm->north == NULL || gm->south == NULL || \
-								gm->west == NULL || gm->east == NULL))
-	gm->erreur = 2;
-	if ((gm->north != NULL || gm->south != NULL || gm->west != NULL || \
-		gm->east != NULL) && \
+	if (gm->sizeline > 0 && (gm->north == NULL || gm->south == NULL
+			|| gm->west == NULL || gm->east == NULL))
+		gm->erreur = 2;
+	if ((gm->north != NULL || gm->south != NULL || gm->west != NULL ||
+			gm->east != NULL) &&
 		(gm->rx == 0 || gm->ry == 0))
 		gm->erreur = 2;
 	gm->rx = WIN_X;

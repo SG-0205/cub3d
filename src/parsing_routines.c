@@ -29,7 +29,7 @@ void	parsing_routine_map(t_gm *gm, int *ret, int *fd, char *str)
 {
 	*ret = get_next_line(*fd, &str, gm);
 	gm->gnl_internal_link = &str;
-	if (gm->insidemap == 1 && ft_empty_line(str) == 0 \
+	if (gm->insidemap == 1 && ft_empty_line(str) == 0
 		&& gm->count < gm->nblines)
 		gm->empty_line = 1;
 	gm->insidemap = ft_is_map(str, gm);
