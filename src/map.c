@@ -49,6 +49,7 @@ static void	fill_blank_line(t_gm *gm, int *i, int *j)
 		while (++j_2 < gm->sizeline)
 			gm->map[*i][j_2] = '1';
 	}
+  gm->map[*i][gm->sizeline] = 0;
 }
 
 int	ft_copy_map(char *str, t_gm *gm)

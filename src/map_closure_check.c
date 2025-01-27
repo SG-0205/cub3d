@@ -111,4 +111,5 @@ void	map_closure_check(t_gm *gm, char *file)
 				gm->map[x][y] = '0';
 		y = -1;
 	}
+	check_last_data(gm, file);
 }

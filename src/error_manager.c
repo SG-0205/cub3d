@@ -46,6 +46,8 @@ void	ft_verify_errors(t_gm *gm)
 
 void	ft_error_2(t_gm *gm)
 {
+  if (gm->strjoin_link)
+    free(*gm->strjoin_link);
 	if (gm->gnl_buff_link)
 		free(*gm->gnl_buff_link);
 	if (gm->gnl_internal_link)

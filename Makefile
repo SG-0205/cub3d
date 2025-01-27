@@ -16,6 +16,7 @@ SRC =	main.c \
 		parsing_texture_color_res.c \
 		map.c \
 		map_closure_check.c \
+		map_closure_check_2.c \
 		parsing_utils.c \
 		keys_manager.c \
 		raycasting_init.c \

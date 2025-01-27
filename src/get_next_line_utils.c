@@ -87,5 +87,6 @@ char	*ft_subbuff(char *buff, int start, int len, t_gm *gm)
 	}
 	buff[i] = 0;
 	free(str);
+  gm->strjoin_link = NULL;
 	return (buff);
 }
